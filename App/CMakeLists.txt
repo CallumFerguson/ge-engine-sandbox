@@ -1,15 +1,15 @@
 cmake_minimum_required(VERSION 3.24)
-project(Sandbox)
+project(App)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/dist)
 
 set(
-        SANDBOX_SOURCES
+        APP_SOURCES
 
         src/main.cpp
 
-        src/sandboxApp.cpp
+        src/app.cpp
 
         src/scripts/TestRenderer.cpp
         src/scripts/TrackFramerate.cpp
@@ -23,29 +23,29 @@ set(
 )
 
 if (WIN32 AND NOT EMSCRIPTEN)
-    list(APPEND SANDBOX_SOURCES platform/windows/resources.rc)
+    list(APPEND APP_SOURCES platform/windows/resources.rc)
 endif ()
 
-add_executable(Sandbox ${SANDBOX_SOURCES})
+add_executable(App ${APP_SOURCES})
 
 if (EMSCRIPTEN)
     if (CMAKE_BUILD_TYPE STREQUAL "Debug")
         target_link_options(
-                Sandbox PRIVATE
+                App PRIVATE
                 -sNO_DISABLE_EXCEPTION_CATCHING
         )
     endif ()
 
     # this is only needed if you want it to relink if emscriptenUtility.js changes, but no other cpp files change
-    set_target_properties(Sandbox PROPERTIES LINK_DEPENDS ${CMAKE_SOURCE_DIR}/GameEngine/src/GameEngine/Utility/emscriptenUtility.js)
+    set_target_properties(App PROPERTIES LINK_DEPENDS ${CMAKE_SOURCE_DIR}/ge-engine/GameEngine/src/GameEngine/Utility/emscriptenUtility.js)
 
     if (DEBUG_FASTER)
         target_compile_options(
-                Sandbox PRIVATE
+                App PRIVATE
                 -O2
         )
         target_link_options(
-                Sandbox PRIVATE
+                App PRIVATE
                 -O2
         )
         target_compile_options(
@@ -57,16 +57,15 @@ if (EMSCRIPTEN)
                 -O2
         )
     endif ()
-
 endif ()
 
-target_precompile_headers(Sandbox REUSE_FROM GameEngine)
+target_precompile_headers(App REUSE_FROM GameEngine)
 
-target_link_libraries(Sandbox PRIVATE GameEngine)
+target_link_libraries(App PRIVATE GameEngine)
 
 target_include_directories(
-        Sandbox PUBLIC
-        ../GameEngine/src
+        App PUBLIC
+        ../ge-engine/GameEngine/src
 )
 
 function(copy_file_relative NEW_TARGET_NAME DIR PATH TARGET)
@@ -85,7 +84,7 @@ function(copy_file_relative NEW_TARGET_NAME DIR PATH TARGET)
 endfunction()
 
 if (EMSCRIPTEN)
-    copy_file_relative(index_html Sandbox/platform/emscripten index.html Sandbox)
-    copy_file_relative(favicon_ico Sandbox/platform/emscripten favicon.ico Sandbox)
-    copy_file_relative(parse_hdr_worker_js GameEngine/src/GameEngine/Utility parseHDRWorker.js GameEngine)
+    copy_file_relative(index_html App/platform/emscripten index.html App)
+    copy_file_relative(favicon_ico App/platform/emscripten favicon.ico App)
+    copy_file_relative(parse_hdr_worker_js ge-engine/GameEngine/src/GameEngine/Utility parseHDRWorker.js GameEngine)
 endif ()
