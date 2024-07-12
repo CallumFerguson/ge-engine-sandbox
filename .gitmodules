@@ -1,0 +1,3 @@
+[submodule "ge-engine"]
+	path = ge-engine
+	url = https://github.com/CallumFerguson/ge-engine.git
