@@ -77,3 +77,5 @@ configurations will ensure assets are automatically packaged before each run.
 
 6. **Build and run:**
     - Press run (only building will not trigger asset packing).
+    - Note that I may crash on the first build because it will try to package assets into a folder that does not exist until after the first build. Just press run again.
+      - TODO: fix this
