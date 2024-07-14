@@ -67,10 +67,13 @@ configurations will ensure assets are automatically packaged before each run.
 
 5. **Edit Run Configuration:**
     - Edit the `App-Emscripten` run configuration.
-    - Under "Before Launch," edit the External Tool `External Tools/PreloadAssetsEmscripten`:
-        - Program: `$ContentRoot$\App\platform\emscripten\scripts\preloadAssetsEmscripten.bat`
-        - Arguments: `$CMakeCurrentBuildDir$ path\to\emsdk`
-        - Working Directory: `$ContentRoot$\App`
+    - Make sure that under "Before Launch" PackageAssets-NoCopy uses Release-Visual Studio CMake profile. The package assets tool cannot be built with emscsripten
+      - it should look like "Run 'CMake Application 'PackageAssets-NoCopy' | Release-Visual Studio'"
+    - Make sure that preloadAssetsEmscripten.bat is run after PackageAssets-NoCopy and before Build
+      - Create or update the external Tool `External Tools/PreloadAssetsEmscripten`:
+          - Program: `$ContentRoot$\App\platform\emscripten\scripts\preloadAssetsEmscripten.bat`
+          - Arguments: `$CMakeCurrentBuildDir$ path\to\emsdk`
+          - Working Directory: `$ContentRoot$\App`
 
-6. **Build or Run:**
-    - Press build or run.
+6. **Build and run:**
+    - Press run (only building will not trigger asset packing).
