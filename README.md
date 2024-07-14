@@ -68,9 +68,9 @@ configurations will ensure assets are automatically packaged before each run.
 5. **Edit Run Configuration:**
     - Edit the `App-Emscripten` run configuration.
     - Under "Before Launch," edit the External Tool `External Tools/PreloadAssetsEmscripten`:
-        - Program: `ge-engine-sandbox\App\platform\emscripten\scripts\preloadAssetsEmscripten.bat`
+        - Program: `$ContentRoot$\App\platform\emscripten\scripts\preloadAssetsEmscripten.bat`
         - Arguments: `$CMakeCurrentBuildDir$ path\to\emsdk`
-        - Working Directory: `ge-engine-sandbox\App`
+        - Working Directory: `$ContentRoot$\App`
 
 6. **Build or Run:**
     - Press build or run.
